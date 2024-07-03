@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
-public abstract class Pessoa implements Serializable {
+public abstract class Pessoa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -2,6 +2,7 @@ package com.devromaomoura.helpdesk.domain;
 
 import com.devromaomoura.helpdesk.domain.enums.Perfil;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.List;
 
 @Entity
 public class Cliente extends Pessoa {
-    @OneToMany(mappedBy = "cliente")
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
     private List<Chamado> chamados = new ArrayList<>();
 
     public Cliente() {

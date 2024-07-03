@@ -5,12 +5,11 @@ import com.devromaomoura.helpdesk.domain.enums.Status;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
-public class Chamado implements Serializable {
+public class Chamado {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -22,10 +21,10 @@ public class Chamado implements Serializable {
     private Status status;
     private String titulo;
     private String obsevacoes;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tecnico_id")
     private Tecnico tecnico;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
