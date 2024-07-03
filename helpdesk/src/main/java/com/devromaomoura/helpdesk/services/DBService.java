@@ -33,9 +33,16 @@ public class DBService {
 
         Chamado c1 = new Chamado(null, Prioridade.MEDIA, Status.EM_ANDAMENTO, "Chamado 1", "Primeiro Chamado", tec1, cli1);
 
-        tecnicoRepository.saveAll(List.of(tec1));
-        clienteRepository.saveAll(List.of(cli1));
-        chamadoRepository.saveAll(List.of(c1));
+        Tecnico tec2 = new Tecnico(null, "Moura", "12345676610", "moura@mail.com", "123");
+        tec2.addPerfil(Perfil.ADMIN);
+
+        Cliente cli2 = new Cliente(null, "Luna", "12348878922", "luna@mail.com", "123");
+
+        Chamado c2 = new Chamado(null, Prioridade.MEDIA, Status.EM_ANDAMENTO, "Chamado 2", "Segundo Chamado", tec1, cli1);
+
+        tecnicoRepository.saveAll(List.of(tec1, tec2));
+        clienteRepository.saveAll(List.of(cli1, cli2));
+        chamadoRepository.saveAll(List.of(c1, c2));
 
         return true;
     }
