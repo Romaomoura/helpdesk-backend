@@ -1,5 +1,6 @@
 package com.devromaomoura.helpdesk.domain.dto;
 
+import com.devromaomoura.helpdesk.domain.Tecnico;
 import com.devromaomoura.helpdesk.domain.enums.Perfil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -20,13 +21,13 @@ public class PessoaDTO {
     public PessoaDTO() {
     }
 
-    public PessoaDTO(Integer id, String nome, String cpf, String email, String senha, Set<Perfil> perfis, LocalDate dataCriacao) {
-        this.id = id;
-        this.nome = nome;
-        this.cpf = cpf;
-        this.email = email;
-        this.senha = senha;
-        this.perfis = perfis;
-        this.dataCriacao = dataCriacao;
+    public PessoaDTO(Tecnico tecnico) {
+        this.id = tecnico.getId();
+        this.nome = tecnico.getNome();
+        this.cpf = tecnico.getCpf();
+        this.email = tecnico.getEmail();
+        this.senha = tecnico.getSenha();
+        this.perfis = tecnico.getPerfis();
+        this.dataCriacao = tecnico.getDataCriacao();
     }
 }

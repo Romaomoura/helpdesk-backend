@@ -1,5 +1,6 @@
 package com.devromaomoura.helpdesk.resources;
 
+import com.devromaomoura.helpdesk.domain.Tecnico;
 import com.devromaomoura.helpdesk.domain.dto.PessoaDTO;
 import com.devromaomoura.helpdesk.services.TecnicoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class TecnicoResource {
 
     @GetMapping("/{id}")
     public ResponseEntity<PessoaDTO> findById(@PathVariable("id") Integer id) {
-        PessoaDTO tecnicoDTO = service.findById(id);
-        return ResponseEntity.ok(tecnicoDTO);
+        Tecnico tecnico = service.findById(id);
+        return ResponseEntity.ok(new PessoaDTO(tecnico));
     }
 }

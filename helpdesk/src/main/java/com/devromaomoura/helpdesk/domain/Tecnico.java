@@ -8,6 +8,7 @@ import jakarta.persistence.OneToMany;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class Tecnico extends Pessoa {
@@ -33,19 +34,13 @@ public class Tecnico extends Pessoa {
         this.chamados = chamados;
     }
 
-    public static PessoaDTO toDTO(Tecnico tecnico) {
-        if (tecnico == null) return null;
-
-        PessoaDTO obj = new PessoaDTO();
-        obj.id = tecnico.getId();
-        obj.nome = tecnico.getNome();
-        obj.cpf = tecnico.getCpf();
-        obj.email = tecnico.getEmail();
-        obj.senha = tecnico.getSenha();
-        obj.perfis = tecnico.getPerfis();
-        obj.dataCriacao = tecnico.getDataCriacao();
-
-        return obj;
-
+    public Tecnico(PessoaDTO tecnico) {
+        this.id = tecnico.id;
+        this.nome = tecnico.nome;
+        this.cpf = tecnico.cpf;
+        this.email = tecnico.email;
+        this.senha = tecnico.senha;
+        this.perfis = tecnico.perfis.stream().map(Perfil::getCodigo).collect(Collectors.toSet());
+        this.dataCriacao = tecnico.dataCriacao;
     }
 }

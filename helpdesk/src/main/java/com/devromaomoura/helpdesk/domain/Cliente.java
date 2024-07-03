@@ -1,5 +1,6 @@
 package com.devromaomoura.helpdesk.domain;
 
+import com.devromaomoura.helpdesk.domain.dto.PessoaDTO;
 import com.devromaomoura.helpdesk.domain.enums.Perfil;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -7,6 +8,7 @@ import jakarta.persistence.OneToMany;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class Cliente extends Pessoa {
@@ -23,6 +25,16 @@ public class Cliente extends Pessoa {
         addPerfil(Perfil.CLIENTE);
     }
 
+    public Cliente(PessoaDTO tecnico) {
+        this.id = tecnico.id;
+        this.nome = tecnico.nome;
+        this.cpf = tecnico.cpf;
+        this.email = tecnico.email;
+        this.senha = tecnico.senha;
+        this.perfis = tecnico.perfis.stream().map(Perfil::getCodigo).collect(Collectors.toSet());
+        this.dataCriacao = tecnico.dataCriacao;
+    }
+
     public List<Chamado> getChamados() {
         return chamados;
     }
@@ -30,4 +42,5 @@ public class Cliente extends Pessoa {
     public void setChamados(List<Chamado> chamados) {
         this.chamados = chamados;
     }
+
 }
