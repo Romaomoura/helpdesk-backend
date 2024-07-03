@@ -3,7 +3,8 @@ package com.devromaomoura.helpdesk.domain.dto;
 import com.devromaomoura.helpdesk.domain.Tecnico;
 import com.devromaomoura.helpdesk.domain.enums.Perfil;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -12,9 +13,13 @@ import java.util.stream.Collectors;
 
 public class PessoaDTO {
     protected Integer id;
+    @NotBlank(message = "Campo NOME é obrigatorio.")
     protected String nome;
+    @NotBlank(message = "Campo CPF é obrigatorio.")
     protected String cpf;
+    @Email(message = "Campo EMAIL é obrigatorio.")
     protected String email;
+    @NotBlank(message = "Campo SENHA é obrigatorio.")
     protected String senha;
     protected Set<Integer> perfis = new HashSet<>();
     @JsonFormat(pattern = "dd/MM/yyyy")
@@ -35,6 +40,7 @@ public class PessoaDTO {
         this.dataCriacao = tecnico.getDataCriacao();
         addPerfil(Perfil.CLIENTE);
     }
+
     public Integer getId() {
         return id;
     }

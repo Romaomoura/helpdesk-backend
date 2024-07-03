@@ -1,13 +1,12 @@
 package com.devromaomoura.helpdesk.resources;
 
-import com.devromaomoura.helpdesk.domain.Tecnico;
 import com.devromaomoura.helpdesk.domain.dto.PessoaDTO;
 import com.devromaomoura.helpdesk.services.TecnicoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -24,14 +23,14 @@ public class TecnicoResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<PessoaDTO>> findAll(){
+    public ResponseEntity<List<PessoaDTO>> findAll() {
         List<PessoaDTO> tecnicos = service.findAll();
         return ResponseEntity.ok(tecnicos);
     }
 
     @PostMapping
-    public ResponseEntity<PessoaDTO> create(@RequestBody PessoaDTO objTecnico){
-         PessoaDTO tecnico = service.create(objTecnico);
+    public ResponseEntity<PessoaDTO> create(@RequestBody @Valid PessoaDTO objTecnico) {
+        PessoaDTO tecnico = service.create(objTecnico);
         return ResponseEntity.status(201).body(tecnico);
     }
 }
