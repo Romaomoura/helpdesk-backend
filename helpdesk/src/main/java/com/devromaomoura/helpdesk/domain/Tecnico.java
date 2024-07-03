@@ -35,12 +35,12 @@ public class Tecnico extends Pessoa {
     }
 
     public Tecnico(PessoaDTO tecnico) {
-        this.id = tecnico.id;
-        this.nome = tecnico.nome;
-        this.cpf = tecnico.cpf;
-        this.email = tecnico.email;
-        this.senha = tecnico.senha;
-        this.perfis = tecnico.perfis.stream().map(Perfil::getCodigo).collect(Collectors.toSet());
-        this.dataCriacao = tecnico.dataCriacao;
+        this.id = tecnico.getId();
+        this.nome = tecnico.getNome();
+        this.cpf = tecnico.getCpf();
+        this.email = tecnico.getEmail();
+        this.senha = tecnico.getSenha();
+        this.perfis = tecnico.getPerfis().stream().map(Perfil::getCodigo).collect(Collectors.toSet());
+        this.dataCriacao = tecnico.getDataCriacao();
     }
 }

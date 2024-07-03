@@ -1,5 +1,6 @@
 package com.devromaomoura.helpdesk.resources.exceptions;
 
+import com.devromaomoura.helpdesk.services.exceptions.DataValidationException;
 import com.devromaomoura.helpdesk.services.exceptions.ObjectNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,13 @@ public class ResourceExceptionHandle {
                 "Object Not Found", exception.getMessage(), request.getRequestURI());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+    @ExceptionHandler(DataValidationException.class)
+    public ResponseEntity<StandardError> dataValidationException(DataValidationException exception, HttpServletRequest request) {
+        StandardError error = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(),
+                "Data Violation", exception.getMessage(), request.getRequestURI());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
 }
