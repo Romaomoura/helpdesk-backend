@@ -11,6 +11,7 @@ import com.devromaomoura.helpdesk.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,19 +36,12 @@ public class ChamadoService {
     }
 
     public ChamadoDTO create(ChamadoDTO objChamado) {
-        var chamadoSalvo = repository.save(this.newChamado(objChamado));
-        objChamado.setId(chamadoSalvo.getId());
-        objChamado.setNomeTecnico(chamadoSalvo.getTecnico().getNome());
-        objChamado.setNomeCliente(chamadoSalvo.getCliente().getNome());
-        return objChamado;
+        return new ChamadoDTO(repository.save(this.newChamado(objChamado)));
     }
     public ChamadoDTO update(Integer id, ChamadoDTO objChamado) {
         this.findById(id);
         objChamado.setId(id);
-        var chamado = repository.saveAndFlush(newChamado(objChamado));
-        objChamado.setNomeTecnico(chamado.getTecnico().getNome());
-        objChamado.setNomeCliente(chamado.getCliente().getNome());
-        return objChamado;
+        return new ChamadoDTO(repository.saveAndFlush(newChamado(objChamado)));
     }
 
     private Chamado newChamado(ChamadoDTO objChamado){
@@ -57,6 +51,8 @@ public class ChamadoService {
         Chamado chamado = new Chamado();
 
         if (objChamado.getId() != null) chamado.setId(objChamado.getId());
+
+        if (objChamado.getStatus().equals(2)) chamado.setDataFechamento(LocalDate.now());
 
         chamado.setTecnico(tecnico);
         chamado.setCliente(cliente);
