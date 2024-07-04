@@ -2,11 +2,11 @@ package com.devromaomoura.helpdesk.services;
 
 import com.devromaomoura.helpdesk.domain.Tecnico;
 import com.devromaomoura.helpdesk.domain.dto.PessoaDTO;
-import com.devromaomoura.helpdesk.domain.enums.Perfil;
 import com.devromaomoura.helpdesk.repositories.TecnicoRepository;
 import com.devromaomoura.helpdesk.services.exceptions.DataValidationException;
 import com.devromaomoura.helpdesk.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +21,8 @@ public class TecnicoService {
     @Autowired
     private PessoaService pessoaService;
 
+    @Autowired private BCryptPasswordEncoder encoder;
+
     public PessoaDTO findById(Integer id) {
         Optional<Tecnico> tecnicoOptional = repository.findById(id);
         if (tecnicoOptional.isEmpty()) throw new ObjectNotFoundException("Técnico não encontrado.");
@@ -34,11 +36,10 @@ public class TecnicoService {
 
     public PessoaDTO create(PessoaDTO objTecnico) {
         pessoaService.validaCpfEmail(objTecnico);
+        objTecnico.setSenha(encoder.encode(objTecnico.getSenha()));
         Tecnico newTecnico = new Tecnico(objTecnico);
         repository.save(newTecnico);
-        objTecnico.setId(newTecnico.getId());
-        objTecnico.addPerfil(Perfil.CLIENTE);
-        return objTecnico;
+        return new PessoaDTO(newTecnico);
     }
 
     public PessoaDTO update(Integer id, PessoaDTO objTecnico) {

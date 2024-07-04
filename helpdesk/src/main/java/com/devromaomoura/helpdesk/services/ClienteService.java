@@ -6,6 +6,7 @@ import com.devromaomoura.helpdesk.repositories.ClienteRepository;
 import com.devromaomoura.helpdesk.services.exceptions.DataValidationException;
 import com.devromaomoura.helpdesk.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +21,8 @@ public class ClienteService {
     @Autowired
     private PessoaService pessoaService;
 
+    @Autowired private BCryptPasswordEncoder encoder;
+
     public PessoaDTO findById(Integer id) {
         Optional<Cliente> clienteOptional = repository.findById(id);
         if (clienteOptional.isEmpty()) throw new ObjectNotFoundException("Cliente não encontrado.");
@@ -33,6 +36,7 @@ public class ClienteService {
 
     public PessoaDTO create(PessoaDTO objCliente) {
         pessoaService.validaCpfEmail(objCliente);
+        objCliente.setSenha(encoder.encode(objCliente.getSenha()));
         Cliente newCliente = new Cliente(objCliente);
         repository.save(newCliente);
         objCliente.setId(newCliente.getId());

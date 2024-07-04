@@ -10,6 +10,8 @@ import com.devromaomoura.helpdesk.repositories.ChamadoRepository;
 import com.devromaomoura.helpdesk.repositories.ClienteRepository;
 import com.devromaomoura.helpdesk.repositories.TecnicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,18 +27,22 @@ public class DBService {
     @Autowired
     private ChamadoRepository chamadoRepository;
 
+    @Autowired
+    private PasswordEncoder encoder;
+
+
     public boolean instanciaDB(){
-        Tecnico tec1 = new Tecnico(null, "Romao", "12345678910", "romao@mail.com", "123");
+        Tecnico tec1 = new Tecnico(null, "Romao", "12345678910", "romao@mail.com", encoder.encode("123"));
         tec1.addPerfil(Perfil.ADMIN);
 
-        Cliente cli1 = new Cliente(null, "Amanda", "12345678922", "amanda@mail.com", "123");
+        Cliente cli1 = new Cliente(null, "Amanda", "12345678922", "amanda@mail.com",  encoder.encode("123"));
 
         Chamado c1 = new Chamado(null, Prioridade.MEDIA, Status.EM_ANDAMENTO, "Chamado 1", "Primeiro Chamado", tec1, cli1);
 
-        Tecnico tec2 = new Tecnico(null, "Moura", "12345676610", "moura@mail.com", "123");
+        Tecnico tec2 = new Tecnico(null, "Moura", "12345676610", "moura@mail.com",  encoder.encode("123"));
         tec2.addPerfil(Perfil.ADMIN);
 
-        Cliente cli2 = new Cliente(null, "Luna", "12348878922", "luna@mail.com", "123");
+        Cliente cli2 = new Cliente(null, "Luna", "12348878922", "luna@mail.com",  encoder.encode("123"));
 
         Chamado c2 = new Chamado(null, Prioridade.MEDIA, Status.EM_ANDAMENTO, "Chamado 2", "Segundo Chamado", tec2, cli2);
 
