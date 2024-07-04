@@ -1,5 +1,6 @@
 package com.devromaomoura.helpdesk.domain;
 
+import com.devromaomoura.helpdesk.domain.dto.ChamadoDTO;
 import com.devromaomoura.helpdesk.domain.enums.Prioridade;
 import com.devromaomoura.helpdesk.domain.enums.Status;
 import com.fasterxml.jackson.annotation.JsonFormat;

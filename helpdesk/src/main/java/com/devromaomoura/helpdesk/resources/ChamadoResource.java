@@ -31,4 +31,10 @@ public class ChamadoResource {
         ChamadoDTO chamado = service.create(objChamado);
         return ResponseEntity.status(201).body(chamado);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ChamadoDTO> update(@PathVariable("id") Integer id,@RequestBody @Valid ChamadoDTO objChamado){
+        ChamadoDTO chamado = service.update(id, objChamado);
+        return ResponseEntity.status(201).body(chamado);
+    }
 }

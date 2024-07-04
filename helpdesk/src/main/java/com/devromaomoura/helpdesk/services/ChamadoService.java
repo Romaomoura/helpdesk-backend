@@ -41,6 +41,14 @@ public class ChamadoService {
         objChamado.setNomeCliente(chamadoSalvo.getCliente().getNome());
         return objChamado;
     }
+    public ChamadoDTO update(Integer id, ChamadoDTO objChamado) {
+        this.findById(id);
+        objChamado.setId(id);
+        var chamado = repository.saveAndFlush(newChamado(objChamado));
+        objChamado.setNomeTecnico(chamado.getTecnico().getNome());
+        objChamado.setNomeCliente(chamado.getCliente().getNome());
+        return objChamado;
+    }
 
     private Chamado newChamado(ChamadoDTO objChamado){
         Tecnico tecnico = tecnicoService.retornaTecnicoCompleto(objChamado.getTecnico());
@@ -58,5 +66,10 @@ public class ChamadoService {
         chamado.setObsevacoes(objChamado.getObsevacoes());
         return chamado;
 
+    }
+
+
+    private Chamado retornaChamadoCompleto(Integer id){
+        return repository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Chamado não encontrado"));
     }
 }
