@@ -33,6 +33,7 @@ public class PessoaDTO {
     }
 
     public PessoaDTO(Tecnico tecnico) {
+        super();
         this.id = tecnico.getId();
         this.nome = tecnico.getNome();
         this.cpf = tecnico.getCpf();
@@ -42,9 +43,23 @@ public class PessoaDTO {
         this.dataCriacao = tecnico.getDataCriacao();
         addPerfil(Perfil.CLIENTE);
     }
+
+    public PessoaDTO(Cliente cliente) {
+        super();
+        this.id = cliente.getId();
+        this.nome = cliente.getNome();
+        this.cpf = cliente.getCpf();
+        this.email = cliente.getEmail();
+        this.senha = cliente.getSenha();
+        this.perfis = cliente.getPerfis().stream().map(Perfil::getCodigo).collect(Collectors.toSet());
+        this.dataCriacao = cliente.getDataCriacao();
+        addPerfil(Perfil.CLIENTE);
+    }
+
     public static Tecnico toTecnico(PessoaDTO obj) {
         return new Tecnico(obj);
     }
+
     public static Cliente toClient(PessoaDTO obj) {
         return new Cliente(obj);
     }
