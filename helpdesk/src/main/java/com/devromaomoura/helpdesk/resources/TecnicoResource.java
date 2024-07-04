@@ -26,7 +26,7 @@ public class TecnicoResource {
     @GetMapping
     public ResponseEntity<List<PessoaDTO>> findAll() {
         List<PessoaDTO> tecnicos = service.findAll();
-        return ResponseEntity.ok(tecnicos);
+        return ResponseEntity.status(201).body(tecnicos);
     }
 
     @PostMapping
@@ -38,5 +38,11 @@ public class TecnicoResource {
     public ResponseEntity<PessoaDTO> update(@PathVariable("id") Integer id, @RequestBody @Valid PessoaDTO objTecnico) {
         PessoaDTO tecnico = service.update(id, objTecnico);
         return ResponseEntity.status(201).body(tecnico);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable("id") Integer id) {
+        service.delete(id);
+        return ResponseEntity.status(201).body("Deletado com Sucesso");
     }
 }

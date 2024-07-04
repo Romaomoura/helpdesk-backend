@@ -4,6 +4,7 @@ import com.devromaomoura.helpdesk.domain.Tecnico;
 import com.devromaomoura.helpdesk.domain.dto.PessoaDTO;
 import com.devromaomoura.helpdesk.domain.enums.Perfil;
 import com.devromaomoura.helpdesk.repositories.TecnicoRepository;
+import com.devromaomoura.helpdesk.services.exceptions.DataValidationException;
 import com.devromaomoura.helpdesk.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,5 +46,18 @@ public class TecnicoService {
         objTecnico.setId(id);
         repository.saveAndFlush(PessoaDTO.toTecnico(objTecnico));
         return objTecnico;
+    }
+
+    public void delete(Integer id) {
+        Tecnico tecnico = this.retornaTecnicoCompleto(id);
+        if (tecnico.getChamados().size() > 0) {
+            throw new DataValidationException("O tecnico possui chamados associados.");
+        }
+        repository.deleteById(id);
+    }
+
+    public Tecnico retornaTecnicoCompleto(Integer id) {
+        Optional<Tecnico> tecnico = repository.findById(id);
+        return tecnico.orElseThrow(() -> new ObjectNotFoundException("Técnico não encontrado."));
     }
 }

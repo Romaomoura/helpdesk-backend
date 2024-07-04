@@ -38,7 +38,7 @@ public class DBService {
 
         Cliente cli2 = new Cliente(null, "Luna", "12348878922", "luna@mail.com", "123");
 
-        Chamado c2 = new Chamado(null, Prioridade.MEDIA, Status.EM_ANDAMENTO, "Chamado 2", "Segundo Chamado", tec1, cli1);
+        Chamado c2 = new Chamado(null, Prioridade.MEDIA, Status.EM_ANDAMENTO, "Chamado 2", "Segundo Chamado", tec2, cli2);
 
         tecnicoRepository.saveAll(List.of(tec1, tec2));
         clienteRepository.saveAll(List.of(cli1, cli2));
