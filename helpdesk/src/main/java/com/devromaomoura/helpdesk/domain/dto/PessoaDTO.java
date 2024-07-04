@@ -1,10 +1,12 @@
 package com.devromaomoura.helpdesk.domain.dto;
 
+import com.devromaomoura.helpdesk.domain.Cliente;
 import com.devromaomoura.helpdesk.domain.Tecnico;
 import com.devromaomoura.helpdesk.domain.enums.Perfil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -15,7 +17,7 @@ public class PessoaDTO {
     protected Integer id;
     @NotBlank(message = "Campo NOME é obrigatorio.")
     protected String nome;
-    @NotBlank(message = "Campo CPF é obrigatorio.")
+    @CPF(message = "Campo CPF é obrigatorio.")
     protected String cpf;
     @Email(message = "Campo EMAIL é obrigatorio.")
     protected String email;
@@ -39,6 +41,12 @@ public class PessoaDTO {
         this.perfis = tecnico.getPerfis().stream().map(Perfil::getCodigo).collect(Collectors.toSet());
         this.dataCriacao = tecnico.getDataCriacao();
         addPerfil(Perfil.CLIENTE);
+    }
+    public static Tecnico toTecnico(PessoaDTO obj) {
+        return new Tecnico(obj);
+    }
+    public static Cliente toClient(PessoaDTO obj) {
+        return new Cliente(obj);
     }
 
     public Integer getId() {

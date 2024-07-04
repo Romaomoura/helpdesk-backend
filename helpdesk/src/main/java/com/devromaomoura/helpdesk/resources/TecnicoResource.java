@@ -1,5 +1,6 @@
 package com.devromaomoura.helpdesk.resources;
 
+import com.devromaomoura.helpdesk.domain.Tecnico;
 import com.devromaomoura.helpdesk.domain.dto.PessoaDTO;
 import com.devromaomoura.helpdesk.services.TecnicoService;
 import jakarta.validation.Valid;
@@ -31,6 +32,11 @@ public class TecnicoResource {
     @PostMapping
     public ResponseEntity<PessoaDTO> create(@RequestBody @Valid PessoaDTO objTecnico) {
         PessoaDTO tecnico = service.create(objTecnico);
+        return ResponseEntity.status(201).body(tecnico);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<PessoaDTO> update(@PathVariable("id") Integer id, @RequestBody @Valid PessoaDTO objTecnico) {
+        PessoaDTO tecnico = service.update(id, objTecnico);
         return ResponseEntity.status(201).body(tecnico);
     }
 }

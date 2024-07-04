@@ -25,14 +25,14 @@ public class Cliente extends Pessoa {
         addPerfil(Perfil.CLIENTE);
     }
 
-    public Cliente(PessoaDTO tecnico) {
-        this.id = tecnico.getId();
-        this.nome = tecnico.getNome();
-        this.cpf = tecnico.getCpf();
-        this.email = tecnico.getEmail();
-        this.senha = tecnico.getSenha();
-        this.perfis = tecnico.getPerfis().stream().map(Perfil::getCodigo).collect(Collectors.toSet());
-        this.dataCriacao = tecnico.getDataCriacao();
+    public Cliente(PessoaDTO cliente) {
+        this.id = cliente.getId();
+        this.nome = cliente.getNome();
+        this.cpf = cliente.getCpf();
+        this.email = cliente.getEmail();
+        this.senha = cliente.getSenha();
+        this.perfis = cliente.getPerfis().stream().map(Perfil::getCodigo).collect(Collectors.toSet());
+        this.dataCriacao = cliente.getDataCriacao();
     }
 
     public List<Chamado> getChamados() {
