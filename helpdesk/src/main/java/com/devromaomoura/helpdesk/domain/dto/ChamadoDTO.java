@@ -2,6 +2,8 @@ package com.devromaomoura.helpdesk.domain.dto;
 
 import com.devromaomoura.helpdesk.domain.Chamado;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
@@ -11,11 +13,17 @@ public class ChamadoDTO {
     private LocalDate dataAbertura = LocalDate.now();
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataFechamento;
+    @NotNull(message = "O campo PRIORIDADE é obrigatorio.")
     private Integer prioridade;
+    @NotNull(message = "O campo STATUS é obrigatorio.")
     private Integer status;
+    @NotBlank(message = "O campo TITULO é obrigatorio.")
     private String titulo;
+    @NotBlank(message = "O campo OBSERVACOES é obrigatorio.")
     private String obsevacoes;
+    @NotNull(message = "O campo TECNICO é obrigatorio.")
     private Integer tecnico;
+    @NotNull(message = "O campo CLIENTE é obrigatorio.")
     private Integer cliente;
     private String nomeTecnico;
     private String nomeCliente;
