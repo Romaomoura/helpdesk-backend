@@ -7,6 +7,7 @@ import com.devromaomoura.helpdesk.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,5 +20,10 @@ public class ChamadoService {
         Optional<Chamado> chamado = repository.findById(id);
         if (chamado.isEmpty()) throw new ObjectNotFoundException("Chamado não encontrado");
         return new ChamadoDTO(chamado.get());
+    }
+
+    public List<ChamadoDTO> findAll() {
+        List<Chamado> chamados = repository.findAll();
+        return chamados.stream().map(ChamadoDTO::new).toList();
     }
 }
