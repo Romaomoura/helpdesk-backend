@@ -1,7 +1,7 @@
 package com.devromaomoura.helpdesk.domain.enums;
 
 public enum Perfil {
-    ADMIN(0, "ROLE_ADMIN"), CLIENTE(1, "ROLE_CLIENTE"), TECNICO(2, "ROLE_TECNICO");
+    ADMIN(0, "ADMIN"), CLIENTE(1, "CLIENTE"), TECNICO(2, "TECNICO");
 
    private  Integer codigo;
    private String descricao;

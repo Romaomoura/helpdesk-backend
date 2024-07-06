@@ -1,11 +1,11 @@
 package com.devromaomoura.helpdesk.resources;
 
-import com.devromaomoura.helpdesk.domain.Tecnico;
 import com.devromaomoura.helpdesk.domain.dto.PessoaDTO;
 import com.devromaomoura.helpdesk.services.TecnicoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,17 +29,20 @@ public class TecnicoResource {
         return ResponseEntity.status(201).body(tecnicos);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<PessoaDTO> create(@RequestBody @Valid PessoaDTO objTecnico) {
         PessoaDTO tecnico = service.create(objTecnico);
         return ResponseEntity.status(201).body(tecnico);
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<PessoaDTO> update(@PathVariable("id") Integer id, @RequestBody @Valid PessoaDTO objTecnico) {
         PessoaDTO tecnico = service.update(id, objTecnico);
         return ResponseEntity.status(201).body(tecnico);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") Integer id) {
         service.delete(id);

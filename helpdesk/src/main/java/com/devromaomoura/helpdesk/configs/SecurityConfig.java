@@ -1,8 +1,8 @@
 package com.devromaomoura.helpdesk.configs;
 
 import com.devromaomoura.helpdesk.security.JWTAuthenticationFilter;
-import com.devromaomoura.helpdesk.security.JwtRequestFilter;
-import com.devromaomoura.helpdesk.security.JwtUtil;
+import com.devromaomoura.helpdesk.security.JWTAuthorizationFilter;
+import com.devromaomoura.helpdesk.security.JWTUtil;
 import com.devromaomoura.helpdesk.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -27,6 +28,7 @@ import java.util.List;
 
 @EnableWebSecurity
 @Configuration
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private final String[] PUBLIC_MATCHERS = {"/h2-console/**"};
@@ -35,13 +37,10 @@ public class SecurityConfig {
     private Environment env;
 
     @Autowired
-    private JwtUtil jwtUtil;
+    private JWTUtil jwtUtil;
 
     @Autowired
-    private JwtRequestFilter jwtRequestFilter;
-
-    @Autowired
-    private UserDetailsServiceImpl userDetailsServiceImpl;
+    private UserDetailsServiceImpl userDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -49,17 +48,17 @@ public class SecurityConfig {
             http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
         }
         http
-                .csrf(AbstractHttpConfigurer::disable)  // Desativa CSRF
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))  // Adiciona configuração de CORS
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(PUBLIC_MATCHERS).permitAll()  // Permite acesso público
-                        .anyRequest().authenticated()  // Requer autenticação para qualquer outra requisição
+                        .requestMatchers(PUBLIC_MATCHERS).permitAll()
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // Política de sessão sem estado
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .addFilterBefore(jwtRequestFilter, JWTAuthenticationFilter.class)
-                .addFilter(new JWTAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)), jwtUtil));
+                .addFilterBefore(new JWTAuthenticationFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)), jwtUtil), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JWTAuthorizationFilter(jwtUtil, userDetailsService), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -78,9 +77,9 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
-        configuration.addAllowedOrigin("*");  // Permite todos os domínios. Substitua "*" por domínios específicos em produção.
-        configuration.addAllowedHeader("*");  // Permite todos os headers.
-        configuration.setAllowedMethods(List.of("POST", "PUT", "DELETE", "GET", "OPTIONS"));  // Permite todos os métodos (GET, POST, etc.).
+        configuration.addAllowedOrigin("*");
+        configuration.addAllowedHeader("*");
+        configuration.setAllowedMethods(List.of("POST", "PUT", "DELETE", "GET", "OPTIONS"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
